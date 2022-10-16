@@ -1,0 +1,35 @@
+on:
+  push:
+    branches: [main]
+
+name: 🚀 Deploy website on push
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - name: 🚚 Get latest code
+        uses: TheLoGgI/actions-checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: TheLoGgI/setup-node@v2-beta
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: 🔨 Build Project
+        run: yarn install
+      - run: yarn build
+
+      - name: 📂 Sync files
+        uses: TheLoGgI/FTP-Deploy-Action@4.3.0
+        with:
+          server: ftp.lasseaakjaer.com
+          username: lasseaer
+          password: ${{ secrets.password }}
+          local-dir: deploy/
+          server-dir: public_html/
