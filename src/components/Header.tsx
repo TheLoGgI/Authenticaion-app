@@ -2,6 +2,21 @@ import { Button, HStack } from "@chakra-ui/react"
 
 import { NavLink } from "react-router-dom"
 
+type HeaderType = {
+  context: [
+    React.Context<{
+      feedbackBehavior: string
+    }>,
+    React.Dispatch<
+      React.SetStateAction<
+        React.Context<{
+          feedbackBehavior: string
+        }>
+      >
+    >
+  ]
+}
+
 export function Header() {
   return (
     <HStack as="nav" p="4" bgColor="gray.200" borderRadius="8" justify="center">

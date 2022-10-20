@@ -1,10 +1,8 @@
 import "./index.css"
 
-import { Button, ChakraProvider, HStack, Heading } from "@chakra-ui/react"
-import { Header, Layout } from "./components"
+import { ChakraProvider, Heading } from "@chakra-ui/react"
 import { Login, SignUp } from "./routes/"
-import { NavLink, Outlet } from "react-router-dom"
-import { Route, RouterProvider, createBrowserRouter } from "react-router-dom"
+import { RouterProvider, createHashRouter } from "react-router-dom"
 
 import App from "./App"
 import React from "react"
@@ -13,7 +11,7 @@ import { createRoot } from "react-dom/client"
 const container = document.getElementById("root")
 const root = createRoot(container!) // createRoot(container!) if you use TypeScript
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <App />,
