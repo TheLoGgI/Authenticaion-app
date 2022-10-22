@@ -1,6 +1,7 @@
 import { Button, HStack } from "@chakra-ui/react"
 
 import { NavLink } from "react-router-dom"
+import { useAuthContext } from "../App"
 
 type HeaderType = {
   context: [
@@ -18,6 +19,8 @@ type HeaderType = {
 }
 
 export function Header() {
+  const { user, signout } = useAuthContext()
+
   return (
     <HStack as="nav" p="4" bgColor="gray.200" borderRadius="8" justify="center">
       <NavLink to="/">
@@ -35,9 +38,15 @@ export function Header() {
           Public Data
         </Button>
       </NavLink>
-      <NavLink to="/login">
-        <Button colorScheme="blue">Login</Button>
-      </NavLink>
+      {user?.validated ? (
+        <NavLink to="/login">
+          <Button colorScheme="blue">Login </Button>
+        </NavLink>
+      ) : (
+        <Button colorScheme="blue" variant="ghost" onClick={() => signout}>
+          Log out
+        </Button>
+      )}
     </HStack>
   )
 }

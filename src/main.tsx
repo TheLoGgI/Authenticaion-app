@@ -1,7 +1,7 @@
 import "./index.css"
 
 import { ChakraProvider, Heading } from "@chakra-ui/react"
-import { Login, SignUp } from "./routes/"
+import { Login, Private, Public, SignUp } from "./routes/"
 import { RouterProvider, createHashRouter } from "react-router-dom"
 
 import App from "./App"
@@ -23,11 +23,11 @@ const router = createHashRouter([
       },
       {
         path: "/private/data",
-        element: <Heading>Private data</Heading>,
+        element: <Private />,
       },
       {
         path: "/public/data",
-        element: <Heading>Public data</Heading>,
+        element: <Public />,
       },
       {
         path: "/login",

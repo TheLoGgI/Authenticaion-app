@@ -56,7 +56,6 @@ export function Login() {
     wrongUsername: false,
     wrongPassword: false,
   })
-  const [app] = useOutletContext()
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> | undefined = (
     event
@@ -70,13 +69,9 @@ export function Login() {
       method: "POST",
       mode: "cors",
       body: formData,
-      //   credentials: "include",
+      credentials: "include" /* Expecting a cookie */,
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json",
-
-        "Access-Control-Request-Headers":
-          "Content-Type, Access-Control-Request-Method, Origin, Accept",
         "Access-Control-Request-Method": "POST",
         Origin: location.origin,
         // Authorization: usernameEmail.current?.value,
@@ -89,17 +84,18 @@ export function Login() {
       .then((res) => {
         console.log("res: ", res)
         if (res.ok) return res.json()
-        return "failed"
-        // setError((p) => ({
-        //   invalidEmail: false,
-        //   invalidPassword: false,
-        //   missingEmail: false,
-        //   missingPassword: false,
-        //   wrongUsername: true,
-        //   wrongPassword: true,
-        // }))
+        setError((p) => ({
+          invalidEmail: false,
+          invalidPassword: false,
+          missingEmail: false,
+          missingPassword: false,
+          wrongUsername: true,
+          wrongPassword: true,
+        }))
       })
-      .then(console.log)
+      .then((data) => {
+        sessionStorage.setItem("sessionId", data.sessionId)
+      })
     // .then((res) => res.())
   }
 
@@ -211,17 +207,6 @@ export function Login() {
 
   return (
     <Box p="4" w="md" bg="gray.100" borderRadius="8">
-      {app.isDevelopment && (
-        <Button
-          onClick={webAuth}
-          colorScheme="green"
-          type="button"
-          mt="4"
-          w="full"
-        >
-          SignUp
-        </Button>
-      )}
       <form onSubmit={handleSubmit}>
         <Text fontSize="xl" fontWeight="medium">
           Login Form
