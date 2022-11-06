@@ -25,18 +25,14 @@ const AuthContext = createContext<AuthContextType>({
 
 function useProvideAuth(): AuthContextType {
   const sessionId = sessionStorage.getItem("sessionId") || ""
-  console.log("sessionId: ", sessionId)
 
   const [uid, maxAge, username] = atob(sessionId).split(":")
 
-  console.log("new Date().getTime(): ", new Date().getTime())
-  console.log("maxAge: ", maxAge)
   const [user, setUser] = useState<User | null>({
     username,
     uid,
     validated: new Date().getTime() / 1000 < Number(maxAge),
   })
-  console.log("user: ", user)
 
   // const signin = cb => {
   //   return fakeAuth.signin(() => {

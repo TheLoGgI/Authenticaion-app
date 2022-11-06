@@ -5,8 +5,11 @@ import { Login, Private, Public, SignUp } from "./routes/"
 import { RouterProvider, createHashRouter } from "react-router-dom"
 
 import App from "./App"
+import { Auth0Provider } from "@auth0/auth0-react"
 import React from "react"
 import { createRoot } from "react-dom/client"
+import { getConfig } from "./settings/config"
+import history from "./utils/history"
 
 const container = document.getElementById("root")
 const root = createRoot(container!) // createRoot(container!) if you use TypeScript
@@ -41,10 +44,29 @@ const router = createHashRouter([
   },
 ])
 
+const onRedirectCallback = (appState: any) => {
+  history.push(
+    appState && appState.returnTo ? appState.returnTo : window.location.pathname
+  )
+}
+
+const config = getConfig()
+
+const providerConfig = {
+  domain: config.domain,
+  clientId: config.clientId,
+  ...(config.audience ? { audience: config.audience } : null),
+  redirectUri: window.location.origin,
+  onRedirectCallback,
+}
+
 root.render(
   <React.StrictMode>
-    <ChakraProvider>
-      <RouterProvider router={router} />
-    </ChakraProvider>
+    <Auth0Provider {...providerConfig}>
+      <ChakraProvider>
+        <RouterProvider router={router} />
+      </ChakraProvider>
+    </Auth0Provider>
+    ,
   </React.StrictMode>
 )
